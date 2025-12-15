@@ -32,8 +32,10 @@ class UserRegisterView(APIView):
 class LoginView(APIView):
 
     authentication_classes = [BasicAuthentication]
+    
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+
         return Response({"message": "login successful"})
             
