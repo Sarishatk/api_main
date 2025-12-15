@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from userApi.models import User
+from userApi.models import User,product
 class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -17,4 +17,13 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         )
 
         return user
+    
+class ProductSerializer(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = product
+
+        exclude = ('user',) 
+        # user >> value authentication ninnu edkkanm
        
