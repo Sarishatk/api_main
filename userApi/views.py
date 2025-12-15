@@ -41,7 +41,7 @@ class LoginView(APIView):
         return Response({"message": "login successful"})
             
 
-class ProductAddView(APIView):
+class ProductAddlistView(APIView):
 
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
@@ -57,8 +57,20 @@ class ProductAddView(APIView):
             serializer.save()
 
             return Response(serializer.data,status=status.HTTP_201_CREATED)
+        
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
+    def get(self, request):
+
+        data = product.objects.filter(user = request.user)
+
+        serializer = ProductSerializer(data, many = True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
 
 
 # list all the product loggined user
