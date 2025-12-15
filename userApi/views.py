@@ -20,6 +20,10 @@ class UserRegisterView(APIView):
 
         if user_serialzer.is_valid():
 
-            user_serialzer.save()
+          user =  user_serialzer.save()
+
+          return Response(user.data, status=status.HTTP_201_CREATED)
+        
+        return Response({"message":"invalid request"}, status=status.HTTP_400_BAD_REQUEST)
 
             
