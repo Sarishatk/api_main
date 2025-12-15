@@ -3,7 +3,8 @@ from userApi.serializers import UserRegisterSerializer
 from rest_framework.views import APIView
 from rest_framework import status
 from userApi.models import *
-from rest_framework.permissions import AllowAny
+from rest_framework.authentication import BaseAuthentication
+from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
 # Create your views here.
 
@@ -20,10 +21,29 @@ class UserRegisterView(APIView):
 
         if user_serialzer.is_valid():
 
-          user =  user_serialzer.save()
+          user_serialzer.save()
 
-          return Response(user.data, status=status.HTTP_201_CREATED)
+          return Response(user_serialzer.data, status=status.HTTP_201_CREATED)
         
-        return Response({"message":"invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(user_serialzer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginView(APIView):
+   
+   authentication_classes = [BaseAuthentication]
+   
+   permission_classes = [IsAuthenticated]
+
+   def post(self, request):
+      
+      user = request.user
+
+      print(user.username)
+
+      print(request.user)
+
+      return Response({"message":"login successfull"})
+   
+
 
             
