@@ -44,6 +44,7 @@ class LoginView(APIView):
 class ProductAddlistView(APIView):
 
     authentication_classes = [BasicAuthentication]
+
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -60,6 +61,8 @@ class ProductAddlistView(APIView):
         
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
+    # list all the product loggined user
+
     def get(self, request):
 
         data = product.objects.filter(user = request.user)
@@ -73,4 +76,3 @@ class ProductAddlistView(APIView):
 
 
 
-# list all the product loggined user
