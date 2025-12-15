@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/',UserRegisterView.as_view()),
     path('login/',LoginView.as_view()),
-    path('product/add/',ProductAddlistView.as_view())
+    path('product/add/',ProductAddlistView.as_view()),
+    path('retreive/<int:pk>',productRetreiveUpdateDeleteView.as_view())
 ]
