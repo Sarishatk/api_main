@@ -3,7 +3,7 @@ from userApi.serializers import UserRegisterSerializer
 from rest_framework.views import APIView
 from rest_framework import status
 from userApi.models import *
-from rest_framework.authentication import BaseAuthentication
+from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
 # Create your views here.
@@ -28,22 +28,12 @@ class UserRegisterView(APIView):
         return Response(user_serialzer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class LoginView(APIView):
-   
-   authentication_classes = [BaseAuthentication]
-   
-   permission_classes = [IsAuthenticated]
 
-   def post(self, request):
-      
-      user = request.user
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
-      print(user.username)
-
-      print(request.user)
-
-      return Response({"message":"login successfull"})
-   
-
-
+    def post(self, request):
+        return Response({"message": "login successful"})
             
