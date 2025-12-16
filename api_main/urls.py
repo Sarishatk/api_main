@@ -24,4 +24,5 @@ urlpatterns = [
     path('login/',LoginView.as_view()),
     path('product/add/',ProductAddlistView.as_view()),
     path('retrieve/<int:pk>/', productRetreiveUpdateDeleteView.as_view()),
+    path('filter/object/',ProductFilterColor.as_view())
 ]

@@ -127,6 +127,30 @@ class productRetreiveUpdateDeleteView(APIView):
         product_item.delete()
 
         return Response({"message":"item deleted successsfully"})
+    
+
+class ProductFilterColor(APIView):
+
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
+    def get(self, request):
+
+        color = request.query_params.get('color')
+
+        products = product.objects.filter(user = request.user)
+
+        data = products.filter(product_color__icontains=color) 
+        
+        serializer = ProductSerializer(data, many = True)
+
+
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        
+
+
 
 
 
