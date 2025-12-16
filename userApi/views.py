@@ -3,12 +3,13 @@ from userApi.serializers import UserRegisterSerializer,ProductSerializer
 from rest_framework.views import APIView
 from rest_framework import status
 from userApi.models import *
-from rest_framework.authentication import BasicAuthentication
+from django.contrib.auth import authenticate
+from rest_framework.authentication import BasicAuthentication,TokenAuthentication
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
 from userApi.models import product
 from django.shortcuts import get_object_or_404
-# Create your views here.
+from rest_framework.authtoken.models import Token# Create your views here.
 
 
 class UserRegisterView(APIView):
@@ -30,21 +31,31 @@ class UserRegisterView(APIView):
         return Response(user_serialzer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class LoginView(APIView):
 
     authentication_classes = [BasicAuthentication]
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
-    def post(self, request):
+    def post(self,request):
 
-        return Response({"message": "login successful"})
-            
+        user = request.user
+
+        token,created = Token.objects.get_or_create(user=user)
+
+        return Response({"message":"login success","token":token.key},status=status.HTTP_200_OK)
+
+        # print(user.username)
+        
+        # print(request.user)
+
+        # return Response({"message":"login success"})
+
+        
 
 class ProductAddlistView(APIView):
 
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
 
     permission_classes = [IsAuthenticated]
 
@@ -76,7 +87,7 @@ class ProductAddlistView(APIView):
 
 class productRetreiveUpdateDeleteView(APIView):
 
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
 
     permission_classes = [IsAuthenticated]
 
@@ -106,6 +117,18 @@ class productRetreiveUpdateDeleteView(APIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
         
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self , request,**kwargs):
+        
+        id = kwargs.get('pk')
+
+        product_item = get_object_or_404(product,id = id, user = request.user)
+
+        product_item.delete()
+
+        return Response({"message":"item deleted successsfully"})
+
+
 
 
 
