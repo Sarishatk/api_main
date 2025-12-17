@@ -56,7 +56,7 @@ class LoginView(APIView):
 
 class ProductAddlistView(APIView):
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [BasicAuthentication]
 
     permission_classes = [IsAuthenticated]
 
