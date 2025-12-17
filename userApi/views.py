@@ -10,6 +10,8 @@ from rest_framework.response import Response
 from userApi.models import product
 from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 # Create your views here.
 
 
@@ -42,9 +44,19 @@ class LoginView(APIView):
 
         user = request.user
 
-        token,created = Token.objects.get_or_create(user=user)
+        # jwt autehntification
 
-        return Response({"message":"login success","token":token.key},status=status.HTTP_200_OK)
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "message": "login successfull",
+            "access": str(refresh.access_token),
+            "refresh": str(refresh)
+        }, status=status.HTTP_200_OK)
+
+        # token,created = Token.objects.get_or_create(user=user)
+
+        # return Response({"message":"login success","token":token.key},status=status.HTTP_200_OK)
 
         # print(user.username)
         
