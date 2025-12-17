@@ -9,7 +9,8 @@ from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
 from userApi.models import product
 from django.shortcuts import get_object_or_404
-from rest_framework.authtoken.models import Token# Create your views here.
+from rest_framework.authtoken.models import Token
+# Create your views here.
 
 
 class UserRegisterView(APIView):
@@ -143,8 +144,6 @@ class ProductFilterColor(APIView):
         data = products.filter(product_color__icontains=color) 
         
         serializer = ProductSerializer(data, many = True)
-
-
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
